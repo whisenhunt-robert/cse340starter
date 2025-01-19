@@ -4,3 +4,13 @@
 *:after {
   box-sizing: border-box;
 }
+
+body {
+  font-family: Arial, sans-serif;
+  color: white;
+  border: 10px solid darkcyan;
+  background-image: url('/images/checkerboard.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
