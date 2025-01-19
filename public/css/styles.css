@@ -9,7 +9,7 @@ body {
   font-family: Arial, sans-serif;
   background-color: white;
   border: 10px solid darkcyan;
-  background-image: url('/images/checkerboard.jpg');
+  background-image: url('/images/site/checkerboard.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
