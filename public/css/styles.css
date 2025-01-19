@@ -7,7 +7,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  color: white;
+  background-color: white;
   border: 10px solid darkcyan;
   background-image: url('/images/checkerboard.jpg');
   background-size: cover;
