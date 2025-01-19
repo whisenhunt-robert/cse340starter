@@ -7,12 +7,47 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: white;
-  border: 10px solid darkcyan;
-  background-image: url('/images/site/checkerboard.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  padding: 20px;
-  box-sizing: border-box;
+  background-color: white; /* White background color */
+  color: black; /* Text color */
+  border: 10px solid darkcyan; /* Cyan blue border */
+  background-image: url('/images/site/checkboard.jpg'); /* Background image */
+  background-size: cover; /* Ensure the image covers the full screen */
+  background-position: center center; /* Center the image */
+  background-attachment: fixed; /* Fix the background image during scroll */
+  padding: 20px; /* Padding inside the body to avoid text touching the edges */
+}
+
+h1, p {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Optional: Adds shadow to text for contrast */
+}
+
+nav {
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for the navigation */
+  padding: 10px;
+}
+
+nav ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
 }
