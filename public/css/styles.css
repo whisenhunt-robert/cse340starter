@@ -7,9 +7,8 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: white; /* White background color */
   color: black; /* Text color */
-  border: 10px solid darkcyan; /* Cyan blue border */
+  border: 10px solid rgb(33, 208, 220); /* Cyan blue border */
   background-image: url('/images/site/checkboard.jpg'); /* Background image */
   background-size: cover; /* Ensure the image covers the full screen */
   background-position: center center; /* Center the image */
