@@ -2,16 +2,17 @@
 *,
 *:before,
 *:after {
+  /* Ensures all elements include padding and border in their total width/height calculations */
   box-sizing: border-box;
 }
 
 main {
-  padding: 1rem;
+  padding: 1rem; /* Adds padding to the main content */
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
+  display: flex; /* Flexbox for layout */
+  justify-content: space-between; /* Space between site name and tools */
 }
 
 .siteName {
@@ -25,39 +26,41 @@ header {
 }
 
 .siteName a, #tools a {
+  /* Styling for site links */
   text-decoration: none;
   color: black;
 }
 
 .siteName a:visited, #tools a:visited {
+  /* Color for visited links */
   color: black;
 }
 
 body {
-  display: flex;
+  display: flex; /* Flex layout for body */
   font-family: Arial, sans-serif;
   color: black; /* Text color */
   padding: 20px; /* Padding inside the body to avoid text touching the edges */
 }
 
 #wrapper {
-  border: 10px solid #4C96D7; /* Cyan blue border */
+  border: 10px solid #4C96D7; /* Cyan blue border around the wrapper */
   background-color: white;
-  margin: auto;
+  margin: auto; /* Centers the wrapper */
 }
 
 #delorean {
-  position: relative;
+  position: relative; /* Allows absolute positioning of child elements */
 }
 
 #d-img {
-  max-width: 100%;
+  max-width: 100%; /* Ensures the image fits its container */
   height: auto;
 }
 
 #cta {
-  position: absolute;
-  background-color: rgba(255, 255, 255, 0.755);
+  position: absolute; /* Positions the call-to-action box relative to the parent */
+  background-color: rgba(255, 255, 255, 0.755); /* Semi-transparent background */
 }
 
 #cta img {
@@ -66,95 +69,95 @@ body {
 }
 
 #d-upgrades {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 100px 100px;
-  text-align: center;
-  gap: 10px;
+  display: grid; /* Grid layout for the upgrades section */
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  grid-template-rows: 100px 100px; /* Two rows */
+  text-align: center; /* Centers text */
+  gap: 10px; /* Adds space between grid items */
 }
 
 .upgrades {
-  display: flex;
-  flex-direction: column;
+  display: flex; /* Flex layout for each upgrade item */
+  flex-direction: column; /* Stack the image and link vertically */
 }
 
 .upgrades img {
-  height: 75px;
+  height: 75px; /* Set height for upgrade images */
   width: auto;
 }
 
 .upgrades div {
-  background-color: #4C96D7;
-  border: 2px solid black;
+  background-color: #4C96D7; /* Background color for the upgrade item */
+  border: 2px solid black; /* Border for the upgrade item */
 }
 
 nav {
-  background-color: black;
+  background-color: black; /* Black background for the navigation */
   padding: 10px;
 }
 
 nav ul {
-  list-style-type: none;
-  display: flex;
-  justify-content: center;
+  list-style-type: none; /* Removes default list style */
+  display: flex; /* Flexbox for navigation items */
+  justify-content: center; /* Centers the navigation items */
 }
 
 nav ul li {
-  color: white;
-  margin: 0 15px;
+  color: white; /* White text color for navigation items */
+  margin: 0 15px; /* Spacing between navigation items */
 }
 
 nav ul li a {
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
+  color: white; /* White text color for links */
+  text-decoration: none; /* Removes underline from links */
+  font-size: 16px; /* Font size for navigation links */
 }
 
 #sect3 ul li {
-  margin: 10px 0;
+  margin: 10px 0; /* Adds margin between review list items */
 }
 
 footer {
-  text-align: left;
+  text-align: left; /* Align footer text to the left */
   padding: 10px;
-  width: 100%;
+  width: 100%; /* Ensures footer spans the full width */
   bottom: 0;
 }
 
 @media screen and (min-width:800px) {
-    
+  /* Adjust layout for larger screen sizes (800px and above) */
   main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 5px;
+    display: grid; /* Grid layout for main content */
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    grid-template-rows: 1fr 1fr; /* Two rows */
+    gap: 5px; /* Adds space between grid items */
   }
 
   section {
-    margin: 1rem;
+    margin: 1rem; /* Adds margin to each section */
   }
 
   #sect1 {
-    grid-column: 1/3;
+    grid-column: 1/3; /* Makes section 1 span across both columns */
   }
 
   #sect2 {
-    grid-column: 1/2;
+    grid-column: 1/2; /* Positions section 2 in the first column */
   }
 
   #sect3 {
-    grid-column: 2/3;
+    grid-column: 2/3; /* Positions section 3 in the second column */
   }
 
   #wrapper {
-    width: fit-content;
+    width: fit-content; /* Ensures the wrapper width adjusts to content */
   }
 
   body {
-    background-image: url('/images/site/small_check.jpg'); /* Background image */
+    background-image: url('/images/site/small_check.jpg'); /* Background image for larger screens */
   }
 
   #delorean {
-    justify-self: left;
+    justify-self: left; /* Aligns Delorean image to the left in the grid */
   }
 }
