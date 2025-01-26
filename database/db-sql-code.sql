@@ -234,3 +234,27 @@ VALUES (
         'White',
         5
     );
+-- Query #4 from Week 03 --
+UPDATE inventory
+SET inv_description = REPLACE(
+        inv_description,
+        'small interiors',
+        'a huge interior'
+    )
+WHERE inv_model = 'GM Hummer';
+-- Query #6 from Week 03 --
+UPDATE inventory
+SET inv_image = CONCAT(
+        '/images/vehicles/',
+        SUBSTRING(
+            inv_image
+            FROM 9
+        )
+    ),
+    inv_thumbnail = CONCAT(
+        '/images/vehicles/',
+        SUBSTRING(
+            inv_thumbnail
+            FROM 9
+        )
+    );
