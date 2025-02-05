@@ -60,6 +60,6 @@ Util.buildClassificationGrid = async function(data){
 module.exports = Util
 
 // Route to build inventory by classification view
-router.get("/type/:classificationId", invController.buildByClassificationId);
+router.get("/type/classificationId", invController.buildByClassificationId);
 
 module.exports = router;
