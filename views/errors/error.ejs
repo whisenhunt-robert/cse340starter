@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <%= nav %> <!-- Insert the navigation bar -->
+        </nav>
+    </header>
+
+    <main>
+        <div class="error-container">
+            <h1>Error: <%= title %>
+            </h1>
+            <p><strong>Message:</strong>
+                <%= message %>
+            </p>
+            <p>Please try again later or contact support.</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; CSE Motors 2025</p>
+    </footer>
+
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 50px;
+        }
+
+        .error-container h1 {
+            font-size: 2em;
+            color: red;
+        }
+
+        .error-container p {
+            font-size: 1.2em;
+        }
+    </style>
+</body>
+
+</html>
