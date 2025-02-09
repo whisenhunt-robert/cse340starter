@@ -26,7 +26,7 @@ app.set("layout", "./layouts/layout"); // not at views root
  *************************/
 app.use(static);
 // Index route
-app.get("/", baseController.buildHome);
+app.get("/", utilities.handleErrors(baseController.buildHome))
 // Inventory routes
 app.use("/inv", inventoryRoute);
 // Intentional Error route for Task 3
