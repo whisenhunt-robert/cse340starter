@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <%= nav %>
+        </nav>
+    </header>
+
+    <main>
+        <div class="vehicle-detail-container">
+            <div class="vehicle-image">
+                <%= vehicle %> <!-- Insert vehicle details HTML generated in controller -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; CSE Motors 2025</p>
+    </footer>
+
+    <style>
+        /* Responsive design */
+        .vehicle-detail-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .vehicle-image img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .vehicle-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .vehicle-info p {
+            font-size: 1.2em;
+            margin: 5px 0;
+        }
+
+        .vehicle-description {
+            margin-top: 20px;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .vehicle-description h3 {
+            font-size: 1.5em;
+        }
+
+        /* Responsive behavior */
+        @media (min-width: 768px) {
+            .vehicle-detail-container {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+
+            .vehicle-image {
+                flex: 1;
+                margin-right: 20px;
+            }
+
+            .vehicle-info {
+                flex: 1;
+            }
+        }
+    </style>
+</body>
+
+</html>
