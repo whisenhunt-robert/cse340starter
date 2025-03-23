@@ -1,35 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="vehicle-detail-container">
+    <div class="vehicle-image">
+        <%= vehicle %> <!-- Insert vehicle details HTML generated in controller -->
+    </div>
+</div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= title %>
-    </title>
-    <link rel="stylesheet" href="/styles/styles.css">
-</head>
-
-<body>
-    <header>
-        <nav>
-            <%= nav %>
-        </nav>
-    </header>
-
-    <main>
-        <div class="vehicle-detail-container">
-            <div class="vehicle-image">
-                <%= vehicle %> <!-- Insert vehicle details HTML generated in controller -->
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <p>&copy; CSE Motors 2025</p>
-    </footer>
-
-    <style>
+<!--    <style>
         /* Responsive design */
         .vehicle-detail-container {
             display: flex;
@@ -80,7 +55,4 @@
                 flex: 1;
             }
         }
-    </style>
-</body>
-
-</html>
+    </style> -->
