@@ -39,21 +39,22 @@ invCont.showAddItemForm = async function (req, res) {
     // Log the classificationList to check if it is an array
     let classificationList = await utilities.buildClassificationList();
     console.log("Classification List:", classificationList);  // Debugging log
+    console.log(req.body);
 
-    let make = req.body.make || '';
-    let model = req.body.model || '';
-    let year = req.body.year || '';
-    let description = req.body.description || '';
-    let price = req.body.price || '';
-    let miles = req.body.miles || '';
-    let color = req.body.color || '';
+    if (req.body) {
+    let make = req.body.make;
+    let model = req.body.model;
+    let year = req.body.year;
+    let description = req.body.description;
+    let price = req.body.price;
+    let miles = req.body.miles;
+    let color = req.body.color;
 
     res.render("inventory/add-item", {
       title: "Add New Inventory Item",
-      messages: req.flash("messages"),
       classificationList: classificationList,
       nav,
-      make,
+      make:make,
       model,
       year,
       description,
@@ -62,6 +63,22 @@ invCont.showAddItemForm = async function (req, res) {
       color,
       errors: null,
     });
+    }
+    else {
+      res.render("inventory/add-item", {
+        title: "Add New Inventory Item",
+        classificationList: classificationList,
+        nav,
+        make: null,
+        model: null,
+        year: null,
+        description: null,
+        price: null,
+        miles: null,
+        color: null,
+        errors: null,
+      });
+    }
   } catch (error) {
     console.error("Error loading add item form:", error);
     res.status(500).send("Server Error");
@@ -89,7 +106,7 @@ invCont.addItem = async function (req, res) {
 
       // Success message
     req.flash("messages", "New vehicle added successfully!");
-    res.redirect("/inventory");
+    res.redirect("/inventory/");
   } catch (error) {
     console.error("Error adding inventory item:", error);
     req.flash("messages", "Error adding inventory item. Please try again.");
@@ -122,7 +139,6 @@ invCont.showAddClassificationForm = async function (req, res) {
     // Render the add-classification view with nav passed in
     res.render("inventory/add-classification", {
       title: "Add New Classification",
-      messages: req.flash("messages"), // If any flash messages are set
       nav, // Pass nav to the view
     });
   } catch (error) {

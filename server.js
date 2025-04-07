@@ -14,10 +14,11 @@ const inventoryRoute = require("./routes/inventoryRoute");
 const baseController = require("./controllers/baseController");
 const invController = require('./controllers/invController');
 const utilities = require('./utilities');  // This will now correctly load index.js
-const session = require("express-session")
-const pool = require('./database/')
+const session = require("express-session");
+const pool = require('./database/');
 const accountRoute = require('./routes/accountRoute');
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 /* ***********************
  * Middleware
@@ -35,7 +36,7 @@ app.use(session({
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser())
 
 // Express Messages Middleware
 app.use(require('connect-flash')())
@@ -54,6 +55,13 @@ app.use(async (err, req, res, next) => {
 
   // Log error to the console
   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
+
+  if (err.status == 404) {
+    message = err.message;
+  }
+  else {
+    message = "Oh no! There was a crash! Maybe try a different route?"
+  };
 
   // Render the error page with error details
   res.render("errors/error", {

@@ -16,22 +16,14 @@
 <h1>Add New Classification</h1>
 
 <!-- Flash message display -->
-<% if (messages && messages.length) { %>
-    <div class="flash-message">
-        <% messages.forEach(function(msg) { %>
-            <p>
-                <%= msg %>
-            </p>
-            <% }); %>
-    </div>
-    <% } %>
+<%- messages() %>
 
-        <!-- Classification Form -->
-        <form action="/inventory/add-classification" method="POST" onsubmit="return validateForm()">
-            <label for="classificationName">Classification Name: </label>
-            <input type="text" id="classificationName" name="classificationName" required>
-            <button type="submit">Add Classification</button>
-        </form>
+    <!-- Classification Form -->
+    <form action="/inventory/add-classification" method="POST" onsubmit="return validateForm()">
+        <label for="classificationName">Classification Name: </label>
+        <input type="text" id="classificationName" name="classificationName" required>
+        <button type="submit">Add Classification</button>
+    </form>
 
-        <br>
-        <a href="/inventory">Back to Management</a>
+    <br>
+    <a href="/inventory">Back to Management</a>

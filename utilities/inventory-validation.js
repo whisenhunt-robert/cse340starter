@@ -42,10 +42,7 @@ validate.inventoryRules = () => { // Fixed the typo here
     .trim()
     .escape()
     .notEmpty()
-    .isCurrency({
-        require_symbol: false,
-        allow_negatives: false,
-})
+    .isInt()
     .withMessage("Please provide a price."),
 
     // Milage is required

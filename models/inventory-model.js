@@ -10,7 +10,7 @@ async function getClassifications() {
 }
 
 // Add a new classification to the database
-invModel.addClassification = async function (classificationName) {
+async function addClassification(classificationName) {
 
   try {
     const query = await pool.query('INSERT INTO public.classification (classification_name) VALUES ($1) RETURNING *',
@@ -23,18 +23,18 @@ invModel.addClassification = async function (classificationName) {
 };
 
 // Add new inventory item
-invModel.addInventoryItem = async function (item) {
+async function addInventoryItem(item) {
   try {
     const query = await pool.query( `
-      INSERT INTO inventory (make, model, year, description, imagePath, thumbnail, price, miles, color, classification_id) 
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      INSERT INTO inventory (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *
   `,
   [item.make, item.model, item.year, item.description, item.imagePath, item.thumbnail, item.price, item.miles, item.color, item.classification_id],
   );
       return query;
   } catch (err) {
       console.error('Error inserting inventory item:', err);
-      throw new Error('Database insertion failed');
+      return null;
   }
 };
 
@@ -75,4 +75,4 @@ async function getVehicleById(vehicleId) {
   }
 }
 
-module.exports = { getClassifications, getInventoryByClassificationId, getVehicleById };
+module.exports = { getClassifications, addClassification, addInventoryItem, getInventoryByClassificationId, getVehicleById};
