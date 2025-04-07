@@ -1,0 +1,35 @@
+<h1>Add New Inventory Item</h1>
+
+<% if (messages && messages.length> 0) { %>
+    <div class="messages">
+        <%= messages %>
+    </div>
+    <% } %>
+
+        <form action="/inventory/add-item" method="POST">
+            <label for="make">Make:</label>
+            <input type="text" id="make" name="make" value="<%= locals.make %>">
+
+            <label for="model">Model:</label>
+            <input type="text" id="model" name="model" value="<%= locals.model %>">
+
+            <label for="year">Year:</label>
+            <input type="text" id="year" name="year" value="<%= locals.year %>">
+
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" value="<%= locals.description %>">
+
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price" value="<%= locals.price %>">
+
+            <label for="miles">Miles:</label>
+            <input type="text" id="miles" name="miles" value="<%= locals.miles %>">
+
+            <label for="color">Color:</label>
+            <input type="text" id="color" name="color" value="<%= locals.color %>">
+
+            <label for="classification_id">Classification:</label>
+            <%- locals.classificationList %>
+
+                <button type="submit">Submit</button>
+        </form>

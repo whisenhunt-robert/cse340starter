@@ -12,7 +12,8 @@ const env = require("dotenv").config();
 const app = express();
 const inventoryRoute = require("./routes/inventoryRoute");
 const baseController = require("./controllers/baseController");
-const utilities = require('./utilities');
+const invController = require('./controllers/invController');
+const utilities = require('./utilities');  // This will now correctly load index.js
 const session = require("express-session")
 const pool = require('./database/')
 const accountRoute = require('./routes/accountRoute');
@@ -32,41 +33,16 @@ app.use(session({
   name: 'sessionId',
 }))
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
 // Express Messages Middleware
 app.use(require('connect-flash')())
 app.use(function(req, res, next){
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
-
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-
-/* ***********************
- * View Engine and Templates
- *************************/
-app.set("view engine", "ejs");
-app.use(expressLayouts);
-app.set("layout", "./layouts/layout"); // not at views root
-
-/* ***********************
- * Routes
- *************************/
-app.use(static);
-// Index route
-app.get("/", utilities.handleErrors(baseController.buildHome));
-// Inventory routes
-app.use("/inv", inventoryRoute);
-app.use("/account", accountRoute);
-// Intentional Error route for Task 3
-app.get("/trigger-error", (req, res, next) => {
-  // This will intentionally cause an error
-  next(new Error("Intentional Server Error for Testing"));
-});
-// File Not Found Route - must be last route in list
-app.use(async (req, res, next) => {
-  next({status: 404, message: 'Sorry, we appear to have lost that page.'});
-});
 
 /* ***********************
  * Express Error Handler
@@ -85,6 +61,35 @@ app.use(async (err, req, res, next) => {
     message: err.message,               // Error message to display
     nav,                               // Navigation HTML
   });
+});
+
+/* ***********************
+ * View Engine and Templates
+ *************************/
+app.set("view engine", "ejs");
+app.use(expressLayouts);
+app.set("layout", "./layouts/layout"); // not at views root
+
+/* ***********************
+ * Routes
+ *************************/
+app.use(static);
+
+// Index route
+app.get("/", utilities.handleErrors(baseController.buildHome));
+
+// Inventory routes
+app.use("/inventory", inventoryRoute);
+app.use("/account", accountRoute);
+
+// Intentional Error route for Task 3
+app.get("/trigger-error", (req, res, next) => {
+  next(new Error("Intentional Server Error for Testing"));
+});
+
+// File Not Found Route - must be last route in list
+app.use(async (req, res, next) => {
+  next({status: 404, message: 'Sorry, we appear to have lost that page.'});
 });
 
 /* ***********************

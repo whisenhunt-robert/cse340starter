@@ -4,13 +4,29 @@
         <h1>
             <%= title %>
         </h1>
-        <% } else { res.redirect('/') } %>
+        <% } else { %>
+            <%= res.redirect('/') %>
+                <% } %>
 </section>
 
 <!-- A message -->
 <section>
     <%# messages() %>
 </section>
+
+<!-- Classification Dropdown -->
+<label for="classification_id">Classification:</label>
+<select id="classification_id" name="classification_id">
+    <% if (Array.isArray(classificationList) && classificationList.length> 0) { %>
+        <% classificationList.forEach(function(classification) { %>
+            <option value="<%= classification.id %>">
+                <%= classification.classification_name %>
+            </option>
+            <% }); %>
+                <% } else { %>
+                    <option value="">No classifications available</option>
+                    <% } %>
+</select>
 
 <!-- Inventory Items -->
 <section><%- grid %></section>

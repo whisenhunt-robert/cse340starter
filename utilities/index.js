@@ -4,14 +4,14 @@ const Util = {};
 /* ************************
  * Constructs the nav HTML unordered list
  ************************** */
-Util.getNav = async function (req, res, next) {
+Util.getNav = async function () {
   let data = await invModel.getClassifications();
   let list = "<ul>";
   list += '<li><a href="/" title="Home page">Home</a></li>';
   data.rows.forEach((row) => {
     list += "<li>";
     list +=
-      '<a href="/inv/type/' +
+      '<a href="/inventory/type/' +
       row.classification_id +
       '" title="See our inventory of ' +
       row.classification_name +
@@ -23,6 +23,24 @@ Util.getNav = async function (req, res, next) {
   list += "</ul>";
   return list;
 };
+
+Util.buildClassificationList = async function (classification_id = null) {
+  let data = await invModel.getClassifications(); // Fetch classifications from the database
+  let classificationList =
+      '<select name="classification_id" id="classificationList" required>';
+  classificationList += "<option value=''>Choose a Classification</option>";
+  
+  // Iterate over classifications and build options
+  data.rows.forEach((row) => {
+      classificationList += '<option value="' + row.classification_id + '"';
+      if (classification_id != null && row.classification_id == classification_id) {
+          classificationList += " selected ";
+      }
+      classificationList += ">" + row.classification_name + "</option>";
+  });
+  classificationList += "</select>";
+  return classificationList;
+}
 
 /* **************************************
  * Build the classification view HTML
@@ -102,5 +120,4 @@ Util.formatVehicleDetails = function(vehicle) {
 Util.handleErrors = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next)
 
-
-module.exports = Util;
+module.exports = Util; // Exporting everything correctly

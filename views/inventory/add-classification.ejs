@@ -1,0 +1,37 @@
+<title>Add New Classification</title>
+<script>
+    // Client-side validation for the classification name
+    function validateForm() {
+        const classificationName = document.getElementById("classificationName").value;
+        const pattern = /^[A-Za-z0-9]+$/; // Only alphanumeric characters
+
+        if (!classificationName.match(pattern)) {
+            alert("Classification name must only contain letters and numbers, without spaces or special characters.");
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<h1>Add New Classification</h1>
+
+<!-- Flash message display -->
+<% if (messages && messages.length) { %>
+    <div class="flash-message">
+        <% messages.forEach(function(msg) { %>
+            <p>
+                <%= msg %>
+            </p>
+            <% }); %>
+    </div>
+    <% } %>
+
+        <!-- Classification Form -->
+        <form action="/inventory/add-classification" method="POST" onsubmit="return validateForm()">
+            <label for="classificationName">Classification Name: </label>
+            <input type="text" id="classificationName" name="classificationName" required>
+            <button type="submit">Add Classification</button>
+        </form>
+
+        <br>
+        <a href="/inventory">Back to Management</a>
