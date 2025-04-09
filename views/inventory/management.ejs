@@ -1,13 +1,27 @@
-<h1>
-    <%= title %>
-</h1>
+<div class="container">
+    <h1>
+        <%= title %>
+    </h1>
 
-<!-- Flash Message Display -->
-<%- messages() %>
+    <!-- Flash Message Display -->
+    <%- messages() %>
 
-    <div id="link-container">
-        <ul>
-            <li><a href="/inventory/add-classification">Add New Classification</a></li>
-            <li><a href="/inventory/add-item">Add New Inventory Item</a></li>
-        </ul>
-    </div>
+        <div id="link-container">
+            <ul>
+                <li><a href="/inventory/add-classification">Add New Classification</a></li>
+                <li><a href="/inventory/add-item">Add New Inventory Item</a></li>
+            </ul>
+        </div>
+
+        <h2>Manage Inventory</h2>
+        <p>Select a classification from the list to see the items belonging to that classification.</p>
+        <form>
+            <label for="classificationList">Choose a Classification:</label>
+            <%- classificationList %> <!-- This is the select list passed from the controller -->
+        </form>
+
+        <table id="inventoryDisplay"></table>
+
+        <noscript>JavaScript must be enabled to use this page.</noscript>
+        <script src="../../js/inventory.js"></script>
+</div>

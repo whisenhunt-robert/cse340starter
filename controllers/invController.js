@@ -9,7 +9,7 @@ invCont.showManagementView = async function (req, res, next) {
   try {
     let nav = await utilities.getNav()
  
-    //Build select for classification
+    // Build select for classification
     const classificationList = await utilities.buildClassificationList()
  
     // Add links
@@ -17,7 +17,7 @@ invCont.showManagementView = async function (req, res, next) {
       '<a href="/inventory/add-classification" id="add-classification-form"> Add Classification</a>'
     let addItem =
       '<a href="/inventory/add-item" id="add-inventory-form"> Add Inventory Item</a>'
- 
+        
     // Render the management view
     res.render("inventory/management", {
       title: "Inventory Management",
@@ -34,7 +34,7 @@ invCont.showManagementView = async function (req, res, next) {
 
 // Show Add Item Form
 invCont.showAddItemForm = async function (req, res) {
-  let nav = utilities.getNav();
+  let nav = await utilities.getNav();
   try {
     // Log the classificationList to check if it is an array
     let classificationList = await utilities.buildClassificationList();
@@ -219,5 +219,40 @@ invCont.getVehicleDetails = async function (req, res, next) {
     res.status(500).send('Server Error');
   }
 };
+
+// Get Inventory items based on Classification ID (JSON response)
+invCont.getInventoryJSON = async function (req, res, next) {
+  const { classification_id } = req.params; // Get the classification_id from the URL params
+
+  try {
+    // Fetch the inventory items for this classification from the database
+    const result = await invModel.getInventoryByClassificationId(classification_id); // Assuming invModel has this function
+
+    // If no items are found for the classification, return an empty array
+    if (result.length === 0) {
+      return res.json([]); // Return an empty array if no items are found
+    }
+
+    // Return the inventory items as JSON
+    return res.json(result); // Send the fetched items as a JSON response
+  } catch (error) {
+    // Log any errors and send a 500 status with an error message
+    console.error("Error fetching inventory:", error);
+    return res.status(500).json({ error: 'Unable to fetch inventory items' });
+  }
+};
+
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id)
+  const invData = await invModel.getInventoryByClassificationId(classification_id)
+  if (invData[0].inv_id) {
+    return res.json(invData)
+  } else {
+    next(new Error("No data returned"))
+  }
+}
 
 module.exports = invCont;

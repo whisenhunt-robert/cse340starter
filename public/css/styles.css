@@ -93,13 +93,16 @@ body {
 
 nav {
   background-color: black; /* Black background for the navigation */
-  padding: 10px;
+  padding: 10px 20px; /* Padding for the nav */
+  margin-bottom: 20px; /* Space below the nav */
 }
 
 nav ul {
   list-style-type: none; /* Removes default list style */
   display: flex; /* Flexbox for navigation items */
   justify-content: center; /* Centers the navigation items */
+  padding: 0; /* Removes default padding */
+  margin: 0; /* Removes default margin */
 }
 
 nav ul li {
@@ -111,6 +114,12 @@ nav ul li a {
   color: white; /* White text color for links */
   text-decoration: none; /* Removes underline from links */
   font-size: 16px; /* Font size for navigation links */
+  padding: 5px 10px; /* Padding around links for better click area */
+}
+
+nav ul li a:hover {
+  background-color: #4C96D7; /* Add a hover effect */
+  border-radius: 5px; /* Rounded corners for hover effect */
 }
 
 #sect3 ul li {
@@ -124,12 +133,126 @@ footer {
   bottom: 0;
 }
 
+#link-container {
+  background-color: #000; /* Black background */
+  padding: 10px 20px; /* Adds padding around the links */
+  margin-bottom: 40px; /* Space below the link container */
+  display: flex;
+  justify-content: center; /* Centers the links within the container */
+}
+
+#link-container ul {
+  list-style-type: none; /* Remove default list bullets */
+  display: flex; /* Align the links horizontally */
+  justify-content: center; /* Center the links horizontally */
+  padding: 0; /* Removes default padding */
+  margin: 0; /* Removes default margin */
+}
+
+#link-container ul li {
+  margin: 0 15px; /* Space between each link */
+}
+
+#link-container ul li a {
+  color: white; /* White text for links */
+  text-decoration: none; /* No underline */
+  font-size: 16px; /* Font size for links */
+  padding: 5px 10px; /* Padding around the links for better click area */
+}
+
+#link-container ul li a:hover {
+  background-color: #4C96D7; /* Add a hover effect */
+  border-radius: 5px; /* Rounded corners for hover effect */
+}
+
+/******* Add New Inventory Item Form ***************/
+form {
+  background-color: white; /* White background for the form */
+  padding: 20px; /* Padding around the form */
+  border: 1px solid #ddd; /* Light border for the form */
+  border-radius: 8px; /* Rounded corners for the form */
+  width: 100%;
+  max-width: 600px; /* Limit the width for better readability */
+  margin-bottom: 20px; /* Space below the form */
+}
+
+form label {
+  font-size: 1rem; /* Standard label font size */
+  margin-bottom: 5px; /* Space between label and input field */
+  display: block; /* Ensures labels are above the input */
+  color: #333;
+}
+
+form input,
+form select {
+  width: 100%; /* Full width for inputs and select */
+  padding: 10px; /* Padding inside input fields */
+  margin-bottom: 15px; /* Space between inputs */
+  border: 1px solid #ccc; /* Light gray border for inputs */
+  border-radius: 4px; /* Rounded corners for input fields */
+  font-size: 1rem; /* Font size for better readability */
+}
+
+form button {
+  background-color: #4C96D7; /* Cyan blue background for submit button */
+  color: white; /* White text on the button */
+  padding: 10px 20px; /* Padding around the button */
+  border: none;
+  border-radius: 4px; /* Rounded corners for the button */
+  font-size: 1rem;
+  cursor: pointer; /* Pointer cursor for button */
+  transition: background-color 0.3s ease; /* Smooth transition for background */
+}
+
+form button:hover {
+  background-color: #3b7ca5; /* Darker blue when hovering */
+}
+
+form button:focus {
+  outline: none; /* Remove default focus outline */
+}
+
+form a {
+  text-decoration: none; /* Remove underline */
+  color: #4C96D7; /* Cyan blue color for the link */
+  font-size: 1rem; /* Font size for the link */
+  margin-top: 10px; /* Space above the link */
+  display: inline-block; /* Makes the link behave like a block for spacing */
+}
+
+form a:hover {
+  text-decoration: underline; /* Underline the link on hover */
+}
+
+/* Flash message styling */
+.flash-message {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #333;
+  font-size: 0.9rem;
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Center the flash message */
+.flash-message.success {
+  border-color: #4caf50; /* Green border for success messages */
+  background-color: #dff0d8; /* Light green background */
+}
+
+.flash-message.error {
+  border-color: #f44336; /* Red border for error messages */
+  background-color: #f8d7da; /* Light red background */
+}
+
 @media screen and (min-width:800px) {
   /* Adjust layout for larger screen sizes (800px and above) */
   main {
     display: grid; /* Grid layout for main content */
     grid-template-columns: 1fr 1fr; /* Two columns */
-    grid-template-rows: 1fr 1fr; /* Two rows */
     gap: 5px; /* Adds space between grid items */
   }
 

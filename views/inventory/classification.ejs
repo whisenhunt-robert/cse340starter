@@ -1,32 +1,20 @@
-<!-- Content Heading -->
-<section>
-    <% if (title) { %>
-        <h1>
-            <%= title %>
-        </h1>
-        <% } else { %>
-            <%= res.redirect('/') %>
-                <% } %>
-</section>
-
-<!-- A message -->
-<section>
-    <%# messages() %>
-</section>
-
-<!-- Classification Dropdown -->
-<label for="classification_id">Classification:</label>
-<select id="classification_id" name="classification_id">
-    <% if (Array.isArray(classificationList) && classificationList.length> 0) { %>
-        <% classificationList.forEach(function(classification) { %>
-            <option value="<%= classification.id %>">
-                <%= classification.classification_name %>
-            </option>
-            <% }); %>
-                <% } else { %>
-                    <option value="">No classifications available</option>
+<div class="container">
+    <!-- Content Heading -->
+    <section>
+        <% if (title) { %>
+            <h1>
+                <%= title %>
+            </h1>
+            <% } else { %>
+                <%= res.redirect('/') %>
                     <% } %>
-</select>
+    </section>
 
-<!-- Inventory Items -->
-<section><%- grid %></section>
+    <!-- A message -->
+    <section>
+        <%# messages() %>
+    </section>
+
+    <!-- Inventory Items -->
+    <section><%- grid %></section>
+</div>
