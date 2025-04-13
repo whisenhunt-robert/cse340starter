@@ -2,32 +2,39 @@
     <h1>
         <%= title %>
     </h1>
+    <h2>Welcome <%= accountData.account_firstname %>
+    </h2>
 
-    <!-- Flash Message Display -->
-    <%- messages() %>
+    <% if (accountData.account_type==='Employee' || accountData.account_type==='Admin' ) { %>
+        <h3>Inventory Management</h3>
+        <p><a href="/inventory">Go to Inventory Management</a></p>
+        <% } %>
 
-        <div id="link-container">
-            <ul>
-                <li><a href="/inventory/add-classification">Add New Classification</a></li>
-                <li><a href="/inventory/add-item">Add New Inventory Item</a></li>
-            </ul>
-        </div>
+            <!-- Flash Message Display -->
+            <%- messages() %>
 
-        <% if (locals.accountData && (locals.accountData.account_type==='Employee' ||
-            locals.accountData.account_type==='Admin' )) { %>
-            <h2>Manage Inventory</h2>
-            <p>Select a classification from the list to see the items belonging to that classification.</p>
+                <div id="link-container">
+                    <ul>
+                        <li><a href="/inventory/add-classification">Add New Classification</a></li>
+                        <li><a href="/inventory/add-item">Add New Inventory Item</a></li>
+                    </ul>
+                </div>
 
-            <form>
-                <label for="classificationList">Choose a Classification:</label>
-                <%- classificationList %> <!-- This select dropdown only shows for authorized users -->
-            </form>
+                <% if (locals.accountData && (locals.accountData.account_type==='Employee' ||
+                    locals.accountData.account_type==='Admin' )) { %>
+                    <h2>Manage Inventory</h2>
+                    <p>Select a classification from the list to see the items belonging to that classification.</p>
 
-            <table id="inventoryDisplay"></table>
+                    <form>
+                        <label for="classificationList">Choose a Classification:</label>
+                        <%- classificationList %> <!-- This select dropdown only shows for authorized users -->
+                    </form>
 
-            <noscript>JavaScript must be enabled to use this page.</noscript>
-            <script src="../../js/inventory.js"></script>
-            <% } else { %>
-                <p>You do not have permission to manage inventory items.</p>
-                <% } %>
+                    <table id="inventoryDisplay"></table>
+
+                    <noscript>JavaScript must be enabled to use this page.</noscript>
+                    <% } else { %>
+                        <p>You do not have permission to manage inventory items.</p>
+                        <% } %>
 </div>
+<script src="../../js/inventory.js"></script>

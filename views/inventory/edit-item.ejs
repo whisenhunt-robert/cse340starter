@@ -4,36 +4,36 @@
 
     <%- messages() %>
 
-        <form action="/inventory/edit-item" method="POST">
+        <form id="updateForm" action="/inventory/edit-item" method="POST">
             <label for="make">Make:</label>
-            <input type="text" id="make" name="make" value="<%= locals.make %>">
+            <input type="text" id="make" name="make" value="<%= make %>">
 
             <label for="model">Model:</label>
-            <input type="text" id="model" name="model" value="<%= locals.model %>">
+            <input type="text" id="model" name="model" value="<%= model %>">
 
             <label for="year">Year:</label>
-            <input type="text" id="year" name="year" value="<%= locals.year %>">
+            <input type="text" id="year" name="year" value="<%= year %>">
 
             <label for="description">Description:</label>
-            <input type="text" id="description" name="description" value="<%= locals.description %>">
+            <input type="text" id="description" name="description" value="<%= description %>">
 
             <label for="price">Price:</label>
-            <input type="text" id="price" name="price" value="<%= locals.price %>">
+            <input type="text" id="price" name="price" value="<%= price %>">
 
             <label for="miles">Miles:</label>
-            <input type="text" id="miles" name="miles" value="<%= locals.miles %>">
+            <input type="text" id="miles" name="miles" value="<%= miles %>">
 
             <label for="color">Color:</label>
-            <input type="text" id="color" name="color" value="<%= locals.color %>">
+            <input type="text" id="color" name="color" value="<%= color %>">
 
-            <label for="classificationList">Classification:</label>
+            <label for="classification_id">Classification:</label>
             <%- classificationSelect %>
 
-                <button type="submit">Update Vehicle</button>
-                <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
-                    <% } %>>
+                <button type="submit" id="submitBtn" disabled>Update Vehicle</button>
+                <input type="hidden" name="inv_id" value="<%= inv_id %>">
         </form>
 
         <br>
         <a href="/inventory">Back to Management</a>
 </div>
+<script src="/js/inv-update.js"></script>

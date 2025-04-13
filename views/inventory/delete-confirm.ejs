@@ -1,0 +1,32 @@
+<div class="container">
+    <h1>Delete <%= itemName %>
+    </h1>
+
+    <%- messages() %>
+
+        <!-- Instructional Text -->
+        <p>Confirm Deletion - This action is permanent and cannot be undone.</p>
+
+        <!-- Delete Form -->
+        <form id="deleteForm" action="/inventory/delete" method="POST">
+            <label for="make">Make:</label>
+            <input type="text" id="make" name="make" value="<%= locals.make %>" readonly>
+
+            <label for="model">Model:</label>
+            <input type="text" id="model" name="model" value="<%= locals.model %>" readonly>
+
+            <label for="year">Year:</label>
+            <input type="text" id="year" name="year" value="<%= locals.year %>" readonly>
+
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price" value="<%= locals.price %>" readonly>
+
+            <!-- Hidden input to preserve inv_id -->
+            <input type="hidden" name="inv_id" value="<%= locals.inv_id %>">
+
+            <button type="submit" id="submitBtn">Delete Vehicle</button>
+        </form>
+
+        <br>
+        <a href="/inventory">Back to Management</a>
+</div>

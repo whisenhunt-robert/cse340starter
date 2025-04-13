@@ -75,20 +75,61 @@ async function getVehicleById(vehicleId) {
   }
 }
 
-// Add new inventory item
+// Update inventory item
 async function updateInventory(item) {
   try {
-    const query = await pool.query( `
-      UPDATE public.inventory (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, inv_id) 
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *
-  `,
-  [item.make, item.model, item.year, item.description, item.imagePath, item.thumbnail, item.price, item.miles, item.color, item.inv_id],
-  );
-      return query;
+    const query = await pool.query(`
+      UPDATE public.inventory 
+      SET 
+        inv_make = $2,
+        inv_model = $3,
+        inv_year = $4,
+        inv_description = $5,
+        inv_image = $6,
+        inv_thumbnail = $7,
+        inv_price = $8,
+        inv_miles = $9,
+        inv_color = $10,
+        classification_id = $11
+      WHERE inv_id = $1
+      RETURNING *
+    `,
+    [
+      item.inv_id,
+      item.make,
+      item.model,
+      item.year,
+      item.description,
+      item.imagePath,
+      item.thumbnail,
+      item.price,
+      item.miles,
+      item.color,
+      item.classification_id
+    ]);
+    
+    if (query.rowCount === 0) {
+      throw new Error("No rows updated! Please verify inv_id exists in the database.");
+    }
+    
+    return query.rows[0]; // Return the updated row
   } catch (err) {
-      console.error('Error inserting inventory item:', err);
-      return null;
+    console.error('Error updating inventory item:', err);
+    return null; // Return null on error
   }
-};
+}
 
-module.exports = { getClassifications, addClassification, addInventoryItem, getInventoryByClassificationId, getVehicleById, updateInventory};
+/* ***************************
+ *  Delete Inventory Item
+ * ************************** */
+async function deleteInventory(inv_id) {
+  try {
+    const sql = 'DELETE FROM inventory WHERE inv_id = $1'
+    const data = await pool.query(sql, [inv_id])
+    return data
+  } catch (error) {
+    throw new Error("Delete Inventory Error")
+  }
+}
+
+module.exports = { getClassifications, addClassification, addInventoryItem, getInventoryByClassificationId, getVehicleById, updateInventory, deleteInventory};

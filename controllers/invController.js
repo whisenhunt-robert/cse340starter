@@ -258,79 +258,64 @@ invCont.getInventoryJSON = async function (req, res, next) {
 
 invCont.buildInvEdit = async function (req, res) {
   let nav = await utilities.getNav();
-  const editID = parseInt(req.params.id)
+  const editID = parseInt(req.params.id);  // Ensure you're using the correct param name
   try {
     let itemData = await invModel.getVehicleById(editID);
     let classificationSelect = await utilities.buildClassificationList(itemData.classification_id);
-    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
-
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`;
+  
     console.log("Classification Select:", classificationSelect);
-
-    res.render("./inventory/edit-item", {
+  
+    res.render("inventory/edit-item", {  // Ensure the template path is correct
       title: "Edit " + itemName,
       itemName,
       nav,
       classificationSelect, // Make sure EJS uses this
       errors: null,
-      id: itemData.inv_id,
+      inv_id: itemData.inv_id,   // Consistent field naming (id or inv_id)
       make: itemData.inv_make,
       model: itemData.inv_model,
       year: itemData.inv_year,
       description: itemData.inv_description,
-      image: itemData.inv_image,
-      thumbnail: itemData.inv_thumbnail,
       price: itemData.inv_price,
       miles: itemData.inv_miles,
       color: itemData.inv_color,
       classification_id: itemData.classification_id
-    })
-
+    });
   } catch (error) {
     console.error("Error loading edit item form:", error);
     res.status(500).send("Server Error");
   }
-};
+};  
 
 // Update Inventory Item
 invCont.updateInventory = async function (req, res) {
   let nav = await utilities.getNav();
+  const classificationSelect = await utilities.buildClassificationList(req.body.classification_id);
+  const itemName = `${req.body.make} ${req.body.model}`;
   
   try {
-    const {
-      inv_id,
-      make,
-      model,
-      year,
-      description,
-      price,
-      miles,
-      color,
-      classification_id
-    } = req.body;
-
-    // Placeholder image paths for now
-    const imagePath = "/images/vehicles/no-image.png";
-    const thumbnail = "/images/vehicles/no-image-tn.png";
+    console.log(req.body.classification_id)
+    let inventoryItem = {
+      inv_id: req.body.inv_id,
+      make: req.body.make,
+      model: req.body.model,
+      year: req.body.year,
+      description: req.body.description,
+      imagePath: "/images/vehicles/no-image.png",
+      thumbnail: "/images/vehicles/no-image-tn.png",
+      price: req.body.price,
+      miles: req.body.miles,
+      color: req.body.color,
+      classification_id: req.body.classification_id,
+    };
 
     // Call the model to update
-    const updateResult = await invModel.updateInventoryItem({
-      inv_id,
-      make,
-      model,
-      year,
-      description,
-      imagePath,
-      thumbnail,
-      price,
-      miles,
-      color,
-      classification_id
-    });
+    const updateResult = await invModel.updateInventory(inventoryItem);
 
     if (updateResult) {
-      const itemName = `${make} ${model}`;
       req.flash("messages", `The ${itemName} was successfully updated.`);
-      return res.redirect("/inventory/");
+      return res.redirect("/inventory");
     } else {
       throw new Error("Update failed.");
     }
@@ -338,38 +323,77 @@ invCont.updateInventory = async function (req, res) {
   } catch (error) {
     console.error("Error updating inventory item:", error);
 
-    // Safely grab fallback values if error happened before destructuring
-    const {
-      inv_id,
-      make,
-      model,
-      year,
-      description,
-      price,
-      miles,
-      color,
-      classification_id
-    } = req.body;
-
-    const classificationSelect = await utilities.buildClassificationList(classification_id);
-    const itemName = `${make} ${model}`;
-
     req.flash("messages", "Error updating inventory item. Please try again.");
-    return res.status(500).render("inventory/edit-item", {
+    res.status(500).render("inventory/edit-item", {
       title: "Edit " + itemName,
+      itemName,
       nav,
       classificationSelect,
       errors: null,
-      inv_id,
-      make,
-      model,
-      year,
-      description,
-      price,
-      miles,
-      color,
-      classification_id
+      inv_id: req.body.inv_id,
+      make: req.body.make,
+      model: req.body.model,
+      year: req.body.year,
+      description: req.body.description,
+      price: req.body.price,
+      miles: req.body.miles,
+      color: req.body.color,
+      classification_id: req.body.classification_id,
     });
+  }
+};
+
+/* ***************************
+ *  Build Delete Confirmation View
+ * ************************** */
+invCont.buildDeleteItemView = async function (req, res) {
+  let nav = await utilities.getNav();
+  const deleteID = parseInt(req.params.id);
+
+  try {
+    let itemData = await invModel.getVehicleById(deleteID);
+    let itemName = `${itemData.inv_make} ${itemData.inv_model}`;
+
+    res.render("inventory/delete-confirm", {
+      title: "Delete " + itemName,
+      itemName,
+      nav,
+      errors: null,
+      make: itemData.inv_make,
+      model: itemData.inv_model,
+      year: itemData.inv_year,
+      price: itemData.inv_price,
+      inv_id: itemData.inv_id
+    });
+  } catch (error) {
+    console.error("Error loading delete confirmation view:", error);
+    res.status(500).send("Server Error");
+  }
+};
+
+/* ***************************
+ *  Carry Out Inventory Deletion
+ * ************************** */
+invCont.deleteInventory = async function (req, res) {
+  let nav = await utilities.getNav();
+
+  try {
+    const inv_id = parseInt(req.body.inv_id);
+
+    // Call the model to delete the item
+    const deleteResult = await invModel.deleteInventory(inv_id);
+
+    if (deleteResult) {
+      req.flash("messages", "Vehicle successfully deleted.");
+      return res.redirect("/inventory");
+    } else {
+      req.flash("messages", "Failed to delete vehicle. Please try again.");
+      return res.redirect(`/inventory/delete/${inv_id}`);
+    }
+  } catch (error) {
+    console.error("Error deleting inventory item:", error);
+    req.flash("messages", "Error deleting vehicle. Please try again.");
+    return res.redirect(`/inventory/delete/${req.body.inv_id}`);
   }
 };
 

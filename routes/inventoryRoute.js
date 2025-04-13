@@ -32,6 +32,12 @@ router.get("/getInventory/:classification_id", utilities.handleErrors(invControl
 router.get("/edit/:id", utilities.handleErrors(invController.buildInvEdit));
 
 // Route to handle Edit Item Form submission
-router.post("/update/", invController.updateInventory);
+router.post("/edit-item", invController.updateInventory);
+
+// Route to show delete confirmation page
+router.get("/delete/:id", utilities.handleErrors(invController.buildDeleteItemView));
+
+// Route to handle deletion logic
+router.post("/delete", utilities.handleErrors(invController.deleteInventory));
 
 module.exports = router;

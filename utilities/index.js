@@ -28,6 +28,7 @@ Util.getNav = async function () {
 
 Util.buildClassificationList = async function (classification_id = null) {
   let data = await invModel.getClassifications(); // Fetch classifications from the database
+  console.log(data);
   let classificationList =
       '<select name="classification_id" id="classificationList" required>';
   classificationList += "<option value=''>Choose a Classification</option>";
