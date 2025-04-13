@@ -65,7 +65,7 @@ async function getVehicleById(vehicleId) {
       `SELECT * FROM public.inventory AS i
       JOIN public.classification AS c
       ON i.classification_id = c.classification_id
-      WHERE i.inventory_id = $1`, 
+      WHERE i.inv_id = $1`, 
       [vehicleId]
     );
 
@@ -75,4 +75,20 @@ async function getVehicleById(vehicleId) {
   }
 }
 
-module.exports = { getClassifications, addClassification, addInventoryItem, getInventoryByClassificationId, getVehicleById};
+// Add new inventory item
+async function updateInventory(item) {
+  try {
+    const query = await pool.query( `
+      UPDATE public.inventory (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, inv_id) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *
+  `,
+  [item.make, item.model, item.year, item.description, item.imagePath, item.thumbnail, item.price, item.miles, item.color, item.inv_id],
+  );
+      return query;
+  } catch (err) {
+      console.error('Error inserting inventory item:', err);
+      return null;
+  }
+};
+
+module.exports = { getClassifications, addClassification, addInventoryItem, getInventoryByClassificationId, getVehicleById, updateInventory};

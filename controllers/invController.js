@@ -26,6 +26,7 @@ invCont.showManagementView = async function (req, res, next) {
       addClassification,
       addItem,
       errors: null,
+      accountData: res.locals.accountData,
     })
   } catch (error) {
     next(`Error building account view: ${error}`)
@@ -245,7 +246,7 @@ invCont.getInventoryJSON = async function (req, res, next) {
 /* ***************************
  *  Return Inventory by Classification As JSON
  * ************************** */
-invCont.getInventoryJSON = async (req, res, next) => {
+/* invCont.getInventoryJSON = async (req, res, next) => {
   const classification_id = parseInt(req.params.classification_id)
   const invData = await invModel.getInventoryByClassificationId(classification_id)
   if (invData[0].inv_id) {
@@ -253,6 +254,123 @@ invCont.getInventoryJSON = async (req, res, next) => {
   } else {
     next(new Error("No data returned"))
   }
-}
+} */
+
+invCont.buildInvEdit = async function (req, res) {
+  let nav = await utilities.getNav();
+  const editID = parseInt(req.params.id)
+  try {
+    let itemData = await invModel.getVehicleById(editID);
+    let classificationSelect = await utilities.buildClassificationList(itemData.classification_id);
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+
+    console.log("Classification Select:", classificationSelect);
+
+    res.render("./inventory/edit-item", {
+      title: "Edit " + itemName,
+      itemName,
+      nav,
+      classificationSelect, // Make sure EJS uses this
+      errors: null,
+      id: itemData.inv_id,
+      make: itemData.inv_make,
+      model: itemData.inv_model,
+      year: itemData.inv_year,
+      description: itemData.inv_description,
+      image: itemData.inv_image,
+      thumbnail: itemData.inv_thumbnail,
+      price: itemData.inv_price,
+      miles: itemData.inv_miles,
+      color: itemData.inv_color,
+      classification_id: itemData.classification_id
+    })
+
+  } catch (error) {
+    console.error("Error loading edit item form:", error);
+    res.status(500).send("Server Error");
+  }
+};
+
+// Update Inventory Item
+invCont.updateInventory = async function (req, res) {
+  let nav = await utilities.getNav();
+  
+  try {
+    const {
+      inv_id,
+      make,
+      model,
+      year,
+      description,
+      price,
+      miles,
+      color,
+      classification_id
+    } = req.body;
+
+    // Placeholder image paths for now
+    const imagePath = "/images/vehicles/no-image.png";
+    const thumbnail = "/images/vehicles/no-image-tn.png";
+
+    // Call the model to update
+    const updateResult = await invModel.updateInventoryItem({
+      inv_id,
+      make,
+      model,
+      year,
+      description,
+      imagePath,
+      thumbnail,
+      price,
+      miles,
+      color,
+      classification_id
+    });
+
+    if (updateResult) {
+      const itemName = `${make} ${model}`;
+      req.flash("messages", `The ${itemName} was successfully updated.`);
+      return res.redirect("/inventory/");
+    } else {
+      throw new Error("Update failed.");
+    }
+
+  } catch (error) {
+    console.error("Error updating inventory item:", error);
+
+    // Safely grab fallback values if error happened before destructuring
+    const {
+      inv_id,
+      make,
+      model,
+      year,
+      description,
+      price,
+      miles,
+      color,
+      classification_id
+    } = req.body;
+
+    const classificationSelect = await utilities.buildClassificationList(classification_id);
+    const itemName = `${make} ${model}`;
+
+    req.flash("messages", "Error updating inventory item. Please try again.");
+    return res.status(500).render("inventory/edit-item", {
+      title: "Edit " + itemName,
+      nav,
+      classificationSelect,
+      errors: null,
+      inv_id,
+      make,
+      model,
+      year,
+      description,
+      price,
+      miles,
+      color,
+      classification_id
+    });
+  }
+};
 
 module.exports = invCont;

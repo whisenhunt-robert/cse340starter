@@ -90,4 +90,33 @@ validate.checkInvData = async (req, res, next) => {
   next();
 };
 
+/* ******************************
+ * Errors will be directed back to the edit view
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  let errors = [];
+  errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    let classificationList = await utilities.buildClassificationList();
+    const itemName = `${make} ${model}`;
+    res.render("inventory/edit-item", {
+        title: "Edit " + itemName,
+        nav,
+        inv_id,
+        errors: null,
+        make: req.body.make, 
+      model: req.body.model, 
+      year: req.body.year, 
+      description: req.body.description, 
+      price: req.body.price, 
+      miles: req.body.miles, 
+      color: req.body.color,
+      classificationList,
+      });
+    return;
+  }
+  next();
+};
+
 module.exports = { validate }; // Fixed the export of validate object

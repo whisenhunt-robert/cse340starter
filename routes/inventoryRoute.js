@@ -28,4 +28,10 @@ router.get("/", invController.showManagementView);
 // Route for getting inventory items based on classification_id
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON));
 
+// Route for editing inventory by ID
+router.get("/edit/:id", utilities.handleErrors(invController.buildInvEdit));
+
+// Route to handle Edit Item Form submission
+router.post("/update/", invController.updateInventory);
+
 module.exports = router;

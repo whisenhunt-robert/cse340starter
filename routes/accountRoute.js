@@ -25,5 +25,8 @@ router.post(
   utilities.handleErrors(accountController.registerAccount)
 );
 
+// Logout of an account
+router.get("/logout", accountController.logout);
+
 // Export the router
 module.exports = router;

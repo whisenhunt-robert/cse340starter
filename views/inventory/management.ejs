@@ -13,15 +13,21 @@
             </ul>
         </div>
 
-        <h2>Manage Inventory</h2>
-        <p>Select a classification from the list to see the items belonging to that classification.</p>
-        <form>
-            <label for="classificationList">Choose a Classification:</label>
-            <%- classificationList %> <!-- This is the select list passed from the controller -->
-        </form>
+        <% if (locals.accountData && (locals.accountData.account_type==='Employee' ||
+            locals.accountData.account_type==='Admin' )) { %>
+            <h2>Manage Inventory</h2>
+            <p>Select a classification from the list to see the items belonging to that classification.</p>
 
-        <table id="inventoryDisplay"></table>
+            <form>
+                <label for="classificationList">Choose a Classification:</label>
+                <%- classificationList %> <!-- This select dropdown only shows for authorized users -->
+            </form>
 
-        <noscript>JavaScript must be enabled to use this page.</noscript>
-        <script src="../../js/inventory.js"></script>
+            <table id="inventoryDisplay"></table>
+
+            <noscript>JavaScript must be enabled to use this page.</noscript>
+            <script src="../../js/inventory.js"></script>
+            <% } else { %>
+                <p>You do not have permission to manage inventory items.</p>
+                <% } %>
 </div>

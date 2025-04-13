@@ -32,67 +32,82 @@ async function buildLogin(req, res, next) {
 *  Handle login process
 * *************************************** */
 async function handleLogin(req, res) {
-  let nav = await utilities.getNav();  // Use utilities.getNav here
+  let nav = await utilities.getNav();
   const { account_email, account_password } = req.body;
 
-  // Validate if email and password are provided
   if (!account_email || !account_password) {
-      req.flash("notice", "Please provide both email and password.");
-      return res.status(400).render("account/login", {
-          title: "Login",
-          nav,
-          errors: req.flash("notice"),
-      });
+    req.flash("notice", "Please provide both email and password.");
+    return res.status(400).render("account/login", {
+      title: "Login",
+      nav,
+      errors: req.flash("notice"),
+    });
   }
 
   try {
-      // Check if account exists by email
-      const user = await accountModel.getAccountByEmail(account_email);
-      if (!user) {
-          req.flash("notice", "Invalid email or password.");
-          return res.status(401).render("account/login", {
-              title: "Login",
-              nav,
-              errors: req.flash("notice"),
-          });
-      }
+    const user = await accountModel.getAccountByEmail(account_email);
 
-      // Compare the provided password with the stored hashed password
-      const match = await bcrypt.compare(account_password, user.account_password);
-      if (!match) {
-          req.flash("notice", "Invalid email or password.");
-          return res.status(401).render("account/login", {
-              title: "Login",
-              nav,
-              errors: req.flash("notice"),
-          });
-      }
-
-      // Successful login
-
-      // 1. Create JWT token
-      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-
-      // 2. Set the JWT token in the cookie
-      res.cookie("jwt", accessToken, { 
-          httpOnly: true, 
-          secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-          maxAge: 3600 * 1000  // Token expiration (1 hour)
+    if (!user) {
+      req.flash("notice", "Invalid email or password.");
+      return res.status(401).render("account/login", {
+        title: "Login",
+        nav,
+        errors: req.flash("notice"),
       });
+    }
 
-      // 3. Flash a success message and redirect
-      req.flash("notice", "Successfully logged in!");
-      return res.redirect("/account/management");  // Redirect to the management page after login
+    const match = await bcrypt.compare(account_password, user.account_password);
+
+    if (!match) {
+      req.flash("notice", "Invalid email or password.");
+      return res.status(401).render("account/login", {
+        title: "Login",
+        nav,
+        errors: req.flash("notice"),
+      });
+    }
+
+    // ✅ Strip out password before creating token
+    const accountData = {
+      account_id: user.account_id,
+      account_firstname: user.account_firstname,
+      account_lastname: user.account_lastname,
+      account_email: user.account_email,
+      account_type: user.account_type
+    };
+
+    // ✅ Sign JWT token
+    const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+
+    // ✅ Set token as cookie
+    res.cookie("jwt", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 3600 * 1000 // 1 hour
+    });
+
+    // ✅ Flash success and redirect
+    req.flash("notice", "Successfully logged in!");
+    return res.redirect("/account/management");
 
   } catch (error) {
-      console.error(error);
-      req.flash("notice", "An error occurred while processing your login.");
-      return res.status(500).render("account/login", {
-          title: "Login",
-          nav,
-          errors: req.flash("notice"),
-      });
+    console.error(error);
+    req.flash("notice", "An error occurred during login.");
+    return res.status(500).render("account/login", {
+      title: "Login",
+      nav,
+      errors: req.flash("notice"),
+    });
   }
+}
+
+/* ****************************************
+*  Handle logout process
+* *************************************** */
+function logout(req, res) {
+  res.clearCookie("jwt");
+  req.flash("notice", "You have successfully logged out.");
+  res.redirect("/");
 }
 
 /* ****************************************
@@ -196,4 +211,4 @@ async function accountLogin(req, res) {
   }
 }
 
-module.exports = { buildManagement, buildLogin, buildRegister, registerAccount, handleLogin, accountLogin};
+module.exports = { buildManagement, buildLogin, logout, buildRegister, registerAccount, handleLogin, accountLogin};
