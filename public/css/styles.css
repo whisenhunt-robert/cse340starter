@@ -248,6 +248,28 @@ form a:hover {
   background-color: #f8d7da; /* Light red background */
 }
 
+.form-section {
+  background-color: #ffffff; /* Matches form background */
+  border: 1px solid #ddd; /* Light border like other forms */
+  border-radius: 8px; /* Rounded corners for a clean look */
+  padding: 20px; /* Internal spacing */
+  max-width: 600px; /* Consistent width */
+  margin: 0 auto 40px auto; /* Center the form section and add spacing below */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+}
+
+.form-section h2 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+  color: #4C96D7; /* Match your theme color */
+  border-bottom: 2px solid #4C96D7; /* A subtle underline to separate header */
+  padding-bottom: 5px;
+}
+
+.form-section form {
+  margin-top: 15px;
+}
+
 @media screen and (min-width:800px) {
   /* Adjust layout for larger screen sizes (800px and above) */
   main {

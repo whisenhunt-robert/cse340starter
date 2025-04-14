@@ -1,4 +1,3 @@
-// accountRoute.js
 const express = require("express");
 const router = express.Router();
 const utilities = require('../utilities');  // Ensure this points to the correct 'utilities.js'
@@ -27,6 +26,26 @@ router.post(
 
 // Logout of an account
 router.get("/logout", accountController.logout);
+
+// --- Route to show the account update view ---
+router.get("/update/:account_id", 
+  utilities.checkLogin, 
+  utilities.handleErrors(accountController.buildAccountUpdateView)
+);
+
+// --- Route to handle account info update (first name, last name, email) ---
+router.post("/update-account", 
+  validate.accountUpdateRules(), 
+  validate.checkUpdateData, 
+  utilities.handleErrors(accountController.accountUpdate)
+);
+
+// --- Route to handle password change ---
+router.post("/change-password", 
+  validate.passwordUpdateRules(), 
+  validate.checkPasswordData, 
+  utilities.handleErrors(accountController.passwordUpdate)
+);
 
 // Export the router
 module.exports = router;
