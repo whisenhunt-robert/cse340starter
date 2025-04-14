@@ -34,14 +34,14 @@ router.get("/update/:account_id",
 );
 
 // --- Route to handle account info update (first name, last name, email) ---
-router.post("/update-account", 
+router.post("/update", 
   validate.accountUpdateRules(), 
   validate.checkUpdateData, 
   utilities.handleErrors(accountController.accountUpdate)
-);
+)
 
 // --- Route to handle password change ---
-router.post("/change-password", 
+router.post("/update-password", 
   validate.passwordUpdateRules(), 
   validate.checkPasswordData, 
   utilities.handleErrors(accountController.passwordUpdate)

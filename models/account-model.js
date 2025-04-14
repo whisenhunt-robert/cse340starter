@@ -59,21 +59,16 @@ async function getAccountById(account_id) {
  * Update account info
  * *************************** */
 async function updateAccount(account_id, firstname, lastname, email) {
-  try {
-    const result = await pool.query(
-      `UPDATE public.account 
-       SET account_firstname = $1, 
-           account_lastname = $2, 
-           account_email = $3 
-       WHERE account_id = $4 
-       RETURNING *`,
-      [firstname, lastname, email, account_id]
-    );
-    return result.rowCount; // 1 if successful
-  } catch (error) {
-    console.error("updateAccount error:", error);
-    throw error;
-  }
+  const sql = `
+    UPDATE account
+    SET account_firstname = $1,
+        account_lastname = $2,
+        account_email = $3
+    WHERE account_id = $4
+    RETURNING *;
+  `
+  const data = await pool.query(sql, [firstname, lastname, email, account_id])
+  return data.rows[0]
 }
 
 /* ***************************

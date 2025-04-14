@@ -15,11 +15,11 @@
                 <div class="flash-message"><%- messages() %></div>
                 <% } %>
 
-                    <% if (errors && errors.array().length> 0) { %>
+                    <% if (errors && errors.length> 0) { %>
                         <ul class="notice">
-                            <% errors.array().forEach(error=> { %>
+                            <% errors.forEach(error=> { %>
                                 <li>
-                                    <%= error.msg %>
+                                    <%= error %>
                                 </li>
                                 <% }) %>
                         </ul>

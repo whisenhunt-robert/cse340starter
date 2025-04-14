@@ -100,10 +100,10 @@ accountCont.handleLogin = async function (req, res) {
 
   try {
     const user = await accountModel.getAccountByEmail(account_email);
-    if (!user) throw new Error();
+    if (!user) throw new Error("Invalid email or password.");
 
     const match = await bcrypt.compare(account_password, user.account_password);
-    if (!match) throw new Error();
+    if (!match) throw new Error("Invalid email or password.");
 
     const accountData = {
       account_id: user.account_id,
@@ -124,12 +124,14 @@ accountCont.handleLogin = async function (req, res) {
     req.flash("notice", "Successfully logged in!");
     return res.redirect("/account/management");
 
-  } catch {
-    req.flash("notice", "Invalid email or password.");
+  } catch (error) {
+    // Use `errors` flash to store errors as an array
+    req.flash("errors", [{ msg: error.message }]);  // Store the error message
     return res.status(401).render("account/login", {
       title: "Login",
       nav,
-      errors: req.flash("notice"),
+      errors: req.flash("errors"),  // Pass it as an array
+      account_email: req.body.account_email,  // Retain email input in case of errors
     });
   }
 };
@@ -164,32 +166,48 @@ accountCont.buildAccountUpdateView = async function (req, res) {
  * *************************************** */
 accountCont.accountUpdate = async function (req, res) {
   const { account_id, account_firstname, account_lastname, account_email } = req.body;
-  const nav = await utilities.getNav();
 
-  const updateResult = await accountModel.updateAccount(account_id, account_firstname, account_lastname, account_email);
+  try {
+    // Fetch the current account data
+    const currentAccount = await accountModel.getAccountById(account_id);
 
-  if (updateResult) {
-    req.flash("success", "Account information successfully updated.");
-    const updatedAccount = await accountModel.getAccountById(account_id);
-    res.render("account/management", {
-      title: "Account Management",
-      nav,
-      accountData: updatedAccount,
-    });
-  } else {
-    req.flash("error", "Sorry, the update failed.");
-    const accountData = await accountModel.getAccountById(account_id);
-    res.render("account/update", {
-      title: "Edit Account",
-      nav,
-      errors: null,
-      accountData
-    });
+    // Check if the email has been changed
+    let emailExists = false;
+    if (account_email !== currentAccount.account_email) {
+      // Only check for email duplication if it's being changed
+      emailExists = await accountModel.getAccountByEmail(account_email);
+    }
+
+    if (emailExists) {
+      req.flash("error", "That email is already in use.");
+      return res.redirect(`/account/update/${account_id}`);
+    }
+
+    // Proceed to update the account information
+    const updateResult = await accountModel.updateAccount(
+      account_id,
+      account_firstname,
+      account_lastname,
+      account_email
+    );
+
+    if (updateResult) {
+      req.flash("success", "Account information updated successfully.");
+      return res.redirect("/account/management");
+    } else {
+      req.flash("error", "Update failed. Please try again.");
+      return res.redirect(`/account/update/${account_id}`);
+    }
+
+  } catch (error) {
+    console.error("Update error:", error);
+    req.flash("error", "An error occurred. Please try again.");
+    return res.redirect(`/account/update/${account_id}`);
   }
 };
 
 /* ****************************************
- * Process password update
+ * Handle password update
  * *************************************** */
 accountCont.passwordUpdate = async function (req, res) {
   const { account_id, account_password } = req.body;
@@ -206,21 +224,25 @@ accountCont.passwordUpdate = async function (req, res) {
     }
 
     const accountData = await accountModel.getAccountById(account_id);
+
+    // Render the management page and pass the flash messages to the view
     res.render("account/management", {
       title: "Account Management",
       nav,
-      accountData
+      accountData,
+      errors: req.flash("error"), // Pass errors to the view
     });
 
   } catch (error) {
     console.error("Password update error:", error);
     req.flash("error", "There was an issue updating the password.");
+
     const accountData = await accountModel.getAccountById(account_id);
-    res.render("account/update", {
-      title: "Edit Account",
+    res.render("account/management", {
+      title: "Account Management",
       nav,
       accountData,
-      errors: null,
+      errors: req.flash("error"), // Pass errors to the view
     });
   }
 };
